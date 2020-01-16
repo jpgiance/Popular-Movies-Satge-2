@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="error_message">No Internet. Please swipe to REFRESH</string>
+    <string name="setting_title">Sort by:</string>
+    <string name="sort_1">Popularity</string>
+    <string name="sort_2">Average Review</string>
+    <string name="favorite_buttong">MARK AS FAVORITE</string>
+    <string name="dummy_text">Every child comes into the world full of promise, and none more so than Chappie: he is gifted, special, a prodigy. Like any child, Chappie will come under the influence of his surroundings—some good, some bad—and he will rely on his heart and soul to find his way in the world and become his own man. But there\'s one thing that makes Chappie different from any one else: he is a robot.</string>
+</resources>
