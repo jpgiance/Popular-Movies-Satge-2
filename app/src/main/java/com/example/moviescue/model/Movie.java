@@ -1,8 +1,11 @@
 package com.example.moviescue.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
-public class Movie implements Serializable {
+public class Movie implements Parcelable {
 
     private String title;
     private String releaseDate;
@@ -21,8 +24,7 @@ public class Movie implements Serializable {
 
 
 
-
-    public void setReleaseDate(String date){
+    public void setReleaseDate( String date){
 
         this.releaseDate = date;
     }
@@ -70,6 +72,45 @@ public class Movie implements Serializable {
     }
 
 
+
+
+
+    protected Movie( Parcel in ) {
+        title = in.readString();
+        releaseDate = in.readString();
+        overview = in.readString();
+        imageLink = in.readString();
+        voteAvg = in.readString();
+        popularity = in.readString();
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel( Parcel in ) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray( int size ) {
+            return new Movie[size];
+        }
+    };
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel( Parcel dest, int flags ) {
+        dest.writeString(title);
+        dest.writeString(releaseDate);
+        dest.writeString(overview);
+        dest.writeString(imageLink);
+        dest.writeString(voteAvg);
+        dest.writeString(popularity);
+    }
 }
 
 

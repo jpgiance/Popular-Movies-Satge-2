@@ -222,8 +222,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
 
 
-
-
     @Override
     public void preExecute() {
 

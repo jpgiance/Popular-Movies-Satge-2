@@ -47,7 +47,7 @@ public class MovieDetail extends AppCompatActivity {
             if (detailIntent.hasExtra("movie")) {
 
                 // ....getting object <movie> from intent
-                detailMovie = (Movie) detailIntent.getSerializableExtra("movie");
+                detailMovie = (Movie) detailIntent.getParcelableExtra("movie");
 
 
                 // ....resizing the title if to large
