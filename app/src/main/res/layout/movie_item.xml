@@ -13,11 +13,4 @@
         android:scaleType="fitXY"
         tools:srcCompat="@tools:sample/backgrounds/scenic[14]" />
 
-    <ImageView
-        android:id="@+id/image_2"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        tools:srcCompat="@tools:sample/backgrounds/scenic[12]" />
 </LinearLayout>

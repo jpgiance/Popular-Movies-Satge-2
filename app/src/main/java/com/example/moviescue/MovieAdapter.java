@@ -48,10 +48,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
 
 
 
-    public class MovieHolder extends RecyclerView.ViewHolder implements OnClickListener {
+    public class MovieHolder extends RecyclerView.ViewHolder implements OnClickListener  {
 
         ImageView movieImage1;
-        ImageView movieImage2;
 
 
 
@@ -60,11 +59,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
             super(itemView);
 
             movieImage1 = itemView.findViewById(R.id.image_1);
-            movieImage2 = itemView.findViewById(R.id.image_2);
-
 
             movieImage1.setOnClickListener(this);
-            movieImage2.setOnClickListener(this);
 
         }
 
@@ -76,16 +72,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
         public void onClick( View v ) {
 
             int adapterPosition = getAdapterPosition();
-            if (v.getId() == movieImage1.getId()){
-
-                mClickHandler.onClick(moviesList.get(adapterPosition*2));
-
-            }
-            else if(v.getId() == movieImage2.getId()){
-
-                mClickHandler.onClick(moviesList.get(adapterPosition*2 + 1));
-            }else {
-                Log.d("Recycler items onClick ", "Item ID not recognized");}
+            mClickHandler.onClick(moviesList.get(adapterPosition));
 
 
         }
@@ -117,15 +104,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
 
 
         Picasso.get()
-                .load(loadMoviePoster(position*2))
+                .load(loadMoviePoster(position))
                 .placeholder(R.mipmap.ic_launcher)             // placeholder could be improved!!
                 .into(holder.movieImage1);
-
-
-        Picasso.get()
-                .load(loadMoviePoster(position*2 + 1))
-                .placeholder(R.mipmap.ic_launcher)            // placeholder could be improved!!
-                .into(holder.movieImage2);
 
 
     }
@@ -139,7 +120,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
         if (null == moviesList) {
             return 0;
         }
-        return moviesList.size()/2;
+        return moviesList.size();
 
     }
 

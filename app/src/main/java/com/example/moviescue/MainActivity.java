@@ -8,6 +8,7 @@ import com.example.moviescue.MovieAdapter.MovieAdapterOnClickHandler;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -15,14 +16,17 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.util.DisplayMetrics;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
@@ -45,7 +49,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     private String POPULARITY = "popularity";
     private String REVIEW = "review";
     private String filter = POPULARITY;        // By default filter popularity is used
-
+    private float POSTER_WIDTH = 185;
+    private float POSTER_HEIGHT =  300;
+    private  float ASPECT_RATIO = POSTER_WIDTH/POSTER_HEIGHT;
 
 
 
@@ -66,10 +72,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         // ....setting up RecyclerView
         adapter = new MovieAdapter(this, this);
         movieRecycler.setAdapter(adapter);
-        movieRecycler.setLayoutManager(new LinearLayoutManager(
-                                                    this,
-                                                            LinearLayoutManager.VERTICAL,
-                                                false));
+        movieRecycler.setLayoutManager(new GridLayoutManager(this, numberOfColumns()));
         movieRecycler.setHasFixedSize(true);
 
 
@@ -244,52 +247,31 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     }
 
 
-   /**
 
 
-    /**
-     * This class provide the methods that allow Async Task for http communication
-     *
-     *
+    private int numberOfColumns(){
 
-    public class FetchMovieData extends AsyncTask<String, Void, String> {
+        // get Display dimensions
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            updateIndicator.setVisibility(View.VISIBLE);
+        //get Display orientation
+        int orientation = getResources().getConfiguration().orientation;
+
+        if(orientation == Configuration.ORIENTATION_PORTRAIT){
+            float columns = (width*2)/(height*ASPECT_RATIO);
+            return Math.round(columns);
+        }
+        if(orientation == Configuration.ORIENTATION_LANDSCAPE){
+            float columns = (width*2)/(height*ASPECT_RATIO);
+            return Math.round(columns);
         }
 
-        @Override
-        protected String doInBackground( String... params ) {
-
-            if (params.length == 0) {
-                return null;
-            }
-
-            URL apiQuery = NetworkUtils.buildUrl(params[0]);
-
-            try {
-                return NetworkUtils.getResponseFromHttpUrl(apiQuery);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute( String queryResponse ) {
-            updateIndicator.setVisibility(View.INVISIBLE);
-            if (queryResponse != null) {
-                showMoviesView();
-                adapter.setMoviesList(JsonUtils.parseMovieListJson(queryResponse));
-            } else {
-                showErrorMessage();
-            }
-        }
+        return 1;
     }
 
-    */
+
 
 }
