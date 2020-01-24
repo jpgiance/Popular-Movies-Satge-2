@@ -23,9 +23,9 @@ public class JsonUtils {
 */
 
 
-    public static List<Movie> parseMovieListJson (String json){
+    public static ArrayList<Movie> parseMovieListJson (String json){
 
-        List<Movie> movieList = new ArrayList<>();      // creating List of Movie objects to be returned
+        ArrayList<Movie> movieList = new ArrayList<>();      // creating List of Movie objects to be returned
 
         try {
             JSONObject movieQuery = new JSONObject(json);       // creating json object from string parameter

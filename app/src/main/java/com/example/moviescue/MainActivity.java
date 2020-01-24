@@ -1,25 +1,22 @@
 package com.example.moviescue;
 
+import com.example.moviescue.adapters.MovieAdapter;
 import com.example.moviescue.model.Movie;
 import com.example.moviescue.utils.JsonUtils;
 import com.example.moviescue.utils.MyAsyncTask;
-import com.example.moviescue.utils.NetworkUtils;
-import com.example.moviescue.MovieAdapter.MovieAdapterOnClickHandler;
+import com.example.moviescue.adapters.MovieAdapter.MovieAdapterOnClickHandler;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Display;
+import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,10 +24,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.util.DisplayMetrics;
-import com.squareup.picasso.Picasso;
 
-import java.io.Serializable;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapterOnClickHandler,
@@ -46,18 +41,31 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    private String POPULARITY = "popularity";
-    private String REVIEW = "review";
+    private final String POPULARITY = "popularity";
+    private final String REVIEW = "review";
     private String filter = POPULARITY;        // By default filter popularity is used
     private float POSTER_WIDTH = 185;
     private float POSTER_HEIGHT =  300;
-    private  float ASPECT_RATIO = POSTER_WIDTH/POSTER_HEIGHT;
+    private float ASPECT_RATIO = POSTER_WIDTH/POSTER_HEIGHT;
+    private ArrayList<Movie> moviesList;
 
 
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate(savedInstanceState);
+
+        if(savedInstanceState == null || !savedInstanceState.containsKey("moviesList")) {
+
+            // ....if no state was saved
+            moviesList = new ArrayList<Movie>();
+
+        }
+        else {
+            moviesList = savedInstanceState.getParcelableArrayList("moviesList");
+            filter = savedInstanceState.getString("filterId");
+        }
+
         setContentView(R.layout.activity_main);
 
         // ....finding views
@@ -80,9 +88,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         swipeRefreshLayout = findViewById(R.id.swipeLayout);
         swipeRefreshLayout.setOnRefreshListener(this);
 
+        if (moviesList.isEmpty()){
+            updateActivity(filter);
+        }else{
+            recoverActivity();
+        }
 
-        // ....fetching data and populating main screen
-        updateActivity(filter);
+
+
 
     }
 
@@ -144,43 +157,53 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     public boolean onOptionsItemSelected( @NonNull MenuItem item ) {
         int id = item.getItemId();
 
+        if (id == R.id.sort_1){
+
+            setFilter(POPULARITY);
+            updateActivity(filter);
+            return true;
+
+        }else if(id == R.id.sort_2){
+
+            setFilter(REVIEW);
+            updateActivity(filter);
+            return true;
+
+        }else{
+            return super.onOptionsItemSelected(item);
+        }
 
 
-        switch (id){
+    }
 
-            case R.id.sort_1:
+
+
+
+
+    private void setFilter(String filterId) {
+
+
+        switch (filterId) {
+
+            case POPULARITY:
                 popularityFilter.setChecked(true);
                 reviewFilter.setChecked(false);
-                setFilter(POPULARITY);
-                updateActivity(filter);
-                return true;
+                filter = POPULARITY;
+                break;
 
 
-            case R.id.sort_2:
+
+            case REVIEW:
                 popularityFilter.setChecked(false);
                 reviewFilter.setChecked(true);
-                setFilter(REVIEW);
-                updateActivity(filter);
-                return true;
+                filter = REVIEW;
+                break;
 
 
-            default:
-                return super.onOptionsItemSelected(item);
-
+            default:break;
         }
 
     }
-
-
-
-
-
-    private void setFilter(String filterSelected){
-
-        filter = filterSelected;
-    }
-
-
 
 
     private void showMoviesView() {
@@ -210,6 +233,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
     private void updateActivity(String filter){
 
+
         errorMessage.setVisibility(View.INVISIBLE);
         movieRecycler.setVisibility(View.VISIBLE);
 
@@ -217,10 +241,28 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         MyAsyncTask FetchMovieData = new MyAsyncTask(MainActivity.this);
         FetchMovieData.execute(filter);
 
+
     }
 
 
 
+    private void recoverActivity(){
+
+        updateIndicator.setVisibility(View.INVISIBLE);
+        showMoviesView();
+        adapter.setMoviesList(moviesList);
+        setFilter(filter);
+
+
+    }
+
+
+    @Override
+    public void onSaveInstanceState( @NonNull Bundle outState) {
+        outState.putParcelableArrayList("moviesList", moviesList);
+        outState.putString("filterId", filter);
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     public void preExecute() {
@@ -237,7 +279,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         updateIndicator.setVisibility(View.INVISIBLE);
         if (queryResponse != null) {
             showMoviesView();
-            adapter.setMoviesList(JsonUtils.parseMovieListJson(queryResponse));
+            moviesList = JsonUtils.parseMovieListJson(queryResponse);
+            adapter.setMoviesList(moviesList);
         } else {
             showErrorMessage();
         }

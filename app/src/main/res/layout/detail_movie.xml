@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -86,6 +87,26 @@
             android:text="@string/dummy_text"
             android:paddingLeft="13dp"
             android:paddingTop="20dp"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trailer_recycler"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            tools:listitem="@layout/trailer_item"
+            tools:layoutManager="android.support.v7.widget.ListLayoutManager"
+            tools:itemCount="5"
+            tools:orientation="vertical"
+            tools:scrollbars="vertical"
+            tools:spanCount="2" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/review_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            tools:listitem="@android:layout/simple_list_item_checked"
+            tools:itemCount="5"
+            tools:orientation="horizontal"/>
 
 
     </LinearLayout>

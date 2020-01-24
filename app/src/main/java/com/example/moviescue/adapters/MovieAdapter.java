@@ -1,7 +1,6 @@
-package com.example.moviescue;
+package com.example.moviescue.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -10,10 +9,12 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.moviescue.R;
 import com.example.moviescue.model.Movie;
 import com.example.moviescue.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,7 +22,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
 
 
     private Context ctx;
-    private List<Movie> moviesList;
+    private ArrayList<Movie> moviesList;
     private final MovieAdapterOnClickHandler mClickHandler;
 
 
@@ -134,7 +135,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
      *
      * @param movies
      */
-    public void setMoviesList(List<Movie> movies) {
+    public void setMoviesList(ArrayList<Movie> movies) {
         moviesList = movies;
         notifyDataSetChanged();
     }
