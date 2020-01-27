@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
             updateActivity(filter);
         }else{
             recoverActivity();
+
         }
 
 
@@ -143,8 +144,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
         popularityFilter = menu.findItem(R.id.sort_1);
         reviewFilter = menu.findItem(R.id.sort_2);
-        popularityFilter.setChecked(true);
-        reviewFilter.setChecked(false);
+        setFilter(filter);
 
         return true;
     }
@@ -251,8 +251,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         updateIndicator.setVisibility(View.INVISIBLE);
         showMoviesView();
         adapter.setMoviesList(moviesList);
-        setFilter(filter);
-
 
     }
 
