@@ -3,6 +3,8 @@ package com.example.moviescue;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,6 +38,8 @@ public class MovieDetail extends AppCompatActivity {
     private RecyclerView trailersRecycler;
     private RecyclerView reviewsRecycler;
     private ReviewsAdapter reviewsAdapter;
+
+    private boolean isFavorite = false;
 
     @Override
     public void onCreate(  Bundle savedInstanceState) {
@@ -131,5 +135,19 @@ public class MovieDetail extends AppCompatActivity {
         }
     }
 
+
+
+    public void addToFavorite( View view){
+
+        ImageButton favoriteIcon = (ImageButton) view;
+        if (!isFavorite){
+            isFavorite = true;
+            favoriteIcon.setImageResource(R.drawable.ic_favorite_red);
+        }else {
+            favoriteIcon.setImageResource(R.drawable.ic_favorite_grey);
+            isFavorite = false;
+
+        }
+    }
 
 }

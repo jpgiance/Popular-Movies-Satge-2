@@ -78,6 +78,7 @@
             android:layout_marginTop="12dp"
             android:background="@color/white"
             android:src="@drawable/ic_favorite_grey"
+            android:onClick="addToFavorite"
             app:layout_constraintStart_toEndOf="@+id/movie_poster"
             app:layout_constraintTop_toBottomOf="@+id/movie_avg_vote" />
 
