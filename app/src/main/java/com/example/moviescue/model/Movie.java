@@ -13,6 +13,7 @@ public class Movie implements Parcelable {
     private String imageLink;
     private String voteAvg;
     private String popularity;
+    private Integer id;
 
 
 
@@ -49,6 +50,10 @@ public class Movie implements Parcelable {
         this.popularity = popular;
     }
 
+    public void setId( Integer id ) {
+
+        this.id = id;
+    }
 
 
     public String getImageLink(){
@@ -71,6 +76,8 @@ public class Movie implements Parcelable {
         return this.voteAvg;
     }
 
+    public Integer getId() { return id; }
+
 
 
 
@@ -82,6 +89,7 @@ public class Movie implements Parcelable {
         imageLink = in.readString();
         voteAvg = in.readString();
         popularity = in.readString();
+        id = in.readInt();
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -110,6 +118,7 @@ public class Movie implements Parcelable {
         dest.writeString(imageLink);
         dest.writeString(voteAvg);
         dest.writeString(popularity);
+        dest.writeInt(id);
     }
 }
 

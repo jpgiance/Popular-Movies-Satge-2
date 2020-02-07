@@ -42,6 +42,7 @@ public class JsonUtils {
                 movie.setReleaseDate(newMovie.optString("release_date"));
                 movie.setOverview(newMovie.optString("overview"));
                 movie.setImageLink(newMovie.optString("poster_path"));
+                movie.setId((Integer) newMovie.get("id"));
                 movie.setVoteAvg(JSONObject.numberToString((Number) newMovie.get("vote_average")));
                 movie.setPopularity(JSONObject.numberToString((Number)newMovie.get("popularity")));
 
