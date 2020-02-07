@@ -6,10 +6,16 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.moviescue.adapters.ReviewsAdapter;
+import com.example.moviescue.adapters.TrailersAdapter;
 import com.example.moviescue.model.Movie;
 import com.example.moviescue.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 
 public class MovieDetail extends AppCompatActivity {
@@ -24,6 +30,13 @@ public class MovieDetail extends AppCompatActivity {
     private String YEAR_ERROR = "Release year is not available";
     private String OVERVIEW_ERROR = "Movie overview is not available";
 
+    private ArrayList<String> reviewsList;
+    private ArrayList<String> trailersList;
+    private TrailersAdapter trailersAdapter;
+    private RecyclerView trailersRecycler;
+    private RecyclerView reviewsRecycler;
+    private ReviewsAdapter reviewsAdapter;
+
     @Override
     public void onCreate(  Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +49,17 @@ public class MovieDetail extends AppCompatActivity {
         vote = findViewById(R.id.movie_avg_vote);
         overview = findViewById(R.id.movie_overview);
         poster = findViewById(R.id.movie_poster);
+        trailersRecycler = findViewById(R.id.trailer_recycler);
+
+
+
+
+        // ....setting up trailersAdapter
+        trailersAdapter = new TrailersAdapter(this);
+        trailersRecycler.setAdapter(trailersAdapter);
+        trailersRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        trailersRecycler.setHasFixedSize(true);
+
 
 
 

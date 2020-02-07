@@ -81,29 +81,51 @@
             app:layout_constraintStart_toEndOf="@+id/movie_poster"
             app:layout_constraintTop_toBottomOf="@+id/movie_avg_vote" />
 
+
         <TextView
             android:id="@+id/movie_overview"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
-            android:paddingLeft="13dp"
-            android:paddingTop="20dp"
+            android:layout_margin="10dp"
+            android:paddingTop="10dp"
             android:text="@string/dummy_text"
             android:textSize="18sp"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/movie_poster" />
 
+
+        <ImageView
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:paddingLeft="15dp"
+            android:background="@color/windowBackgroundBlack"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="@+id/movie_overview"
+            app:layout_constraintStart_toStartOf="@+id/movie_overview"
+            app:layout_constraintTop_toBottomOf="@+id/movie_overview"/>
+
+        <TextView
+            android:id="@+id/trailer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/trailer"
+            android:textSize="20sp"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/trailer_recycler"
             android:layout_width="wrap_content"
             android:layout_height="200dp"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="52dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/movie_overview"
+            app:layout_constraintTop_toBottomOf="@+id/trailer"
             tools:itemCount="4"
             tools:listitem="@layout/recycler_view_item_1"
             tools:orientation="horizontal"
