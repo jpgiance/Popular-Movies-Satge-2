@@ -59,3 +59,19 @@ public class JsonUtils {
     }
 
 }
+
+
+//
+//    public static ArrayList<String> parseReviewsList (String json){
+//
+//
+//
+//    }
+//
+//
+//
+//    public static ArrayList<String> parseTrailersList (String json){
+//
+//
+//
+//    }

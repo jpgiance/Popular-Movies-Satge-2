@@ -5,6 +5,7 @@ import com.example.moviescue.model.Movie;
 import com.example.moviescue.utils.JsonUtils;
 import com.example.moviescue.utils.MyAsyncTask;
 import com.example.moviescue.adapters.MovieAdapter.MovieAdapterOnClickHandler;
+import com.example.moviescue.utils.NetworkUtils;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.util.DisplayMetrics;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -239,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
 
         MyAsyncTask FetchMovieData = new MyAsyncTask(MainActivity.this);
-        FetchMovieData.execute(filter);
+        FetchMovieData.execute(urlBuilder(filter));
 
 
     }
@@ -309,6 +311,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         }
 
         return 1;
+    }
+
+
+
+    private URL urlBuilder(String filter){
+
+        URL apiQuery = NetworkUtils.buildUrl(filter);
+
+        return apiQuery;
     }
 
 

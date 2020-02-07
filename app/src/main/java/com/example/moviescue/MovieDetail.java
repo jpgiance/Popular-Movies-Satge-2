@@ -40,8 +40,21 @@ public class MovieDetail extends AppCompatActivity {
 
 
 
+
+
         // ....getting intent from previous Activity
         Intent detailIntent = getIntent();
+        populateDetailActivity(detailIntent);
+
+
+
+
+    }
+
+
+
+
+    private void populateDetailActivity(Intent detailIntent){
 
         if (detailIntent != null) {
             if (detailIntent.hasExtra("movie")) {
@@ -84,7 +97,7 @@ public class MovieDetail extends AppCompatActivity {
         else{
             Log.d("Activity main to detail", "Intent is null");
         }
-
-
     }
+
+
 }

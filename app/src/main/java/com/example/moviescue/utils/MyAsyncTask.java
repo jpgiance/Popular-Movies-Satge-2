@@ -43,9 +43,7 @@ public class MyAsyncTask extends AsyncTask<Object, Void, String> {
             return null;
         }
 
-        String filter = (String) objects[0];
-
-        URL apiQuery = NetworkUtils.buildUrl(filter);
+        URL apiQuery = (URL) objects[0];
 
         try {
             return NetworkUtils.getResponseFromHttpUrl(apiQuery);
