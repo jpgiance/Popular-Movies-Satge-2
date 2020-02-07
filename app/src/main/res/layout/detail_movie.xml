@@ -121,7 +121,7 @@
             android:id="@+id/trailer_recycler"
             android:layout_width="wrap_content"
             android:layout_height="200dp"
-            android:layout_marginTop="10dp"
+            android:layout_margin="10dp"
             android:orientation="horizontal"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
@@ -131,13 +131,37 @@
             tools:orientation="horizontal"
             tools:scrollbars="horizontal" />
 
+        <ImageView
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:paddingLeft="15dp"
+            android:background="@color/windowBackgroundBlack"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="@+id/movie_overview"
+            app:layout_constraintStart_toStartOf="@+id/trailer_recycler"
+            app:layout_constraintTop_toBottomOf="@+id/trailer_recycler"/>
+
+        <TextView
+            android:id="@+id/reviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/reviews"
+            android:textSize="20sp"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/review_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="84dp"
+            android:layout_marginTop="10dp"
             android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@+id/trailer_recycler"
+            app:layout_constraintTop_toBottomOf="@+id/reviews"
+            app:layout_constraintStart_toStartOf="parent"
             tools:itemCount="3"
             tools:layout_editor_absoluteX="0dp"
             tools:listitem="@layout/recycler_view_item"

@@ -50,6 +50,7 @@ public class MovieDetail extends AppCompatActivity {
         overview = findViewById(R.id.movie_overview);
         poster = findViewById(R.id.movie_poster);
         trailersRecycler = findViewById(R.id.trailer_recycler);
+        reviewsRecycler = findViewById(R.id.review_recycler);
 
 
 
@@ -59,6 +60,13 @@ public class MovieDetail extends AppCompatActivity {
         trailersRecycler.setAdapter(trailersAdapter);
         trailersRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         trailersRecycler.setHasFixedSize(true);
+
+
+        // ....setting up reviewsAdapter
+        reviewsAdapter = new ReviewsAdapter(this);
+        reviewsRecycler.setAdapter(reviewsAdapter);
+        reviewsRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        reviewsRecycler.setHasFixedSize(true);
 
 
 
