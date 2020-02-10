@@ -5,12 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviescue.R;
+import com.example.moviescue.model.MovieReview;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsH
 
 
     private Context ctx;
-    private ArrayList<String> reviewsList;
+    private ArrayList<MovieReview> reviewsList;
 
 
     public ReviewsAdapter( Context ctx ) {
@@ -31,17 +33,18 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsH
     public class ReviewsHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
 
-
-        ImageView reviewImage;
+        TextView reviewAuthor;
+        TextView reviewText;
 
 
         public ReviewsHolder(View itemView){
 
             super(itemView);
 
-            reviewImage = itemView.findViewById(R.id.image_1);
+            reviewText = itemView.findViewById(R.id.review);
+            reviewAuthor = itemView.findViewById(R.id.review_author);
 
-            reviewImage.setOnClickListener(this);
+            reviewText.setOnClickListener(this);
 
         }
 
@@ -63,7 +66,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsH
     public ReviewsAdapter.ReviewsHolder onCreateViewHolder( @NonNull ViewGroup parent, int viewType ) {
 
         LayoutInflater reviewsInflater = LayoutInflater.from(ctx);
-        View trailerView = reviewsInflater.inflate(R.layout.trailer_item, parent, false);
+        View trailerView = reviewsInflater.inflate(R.layout.reviews_item, parent, false);
         ReviewsHolder holder = new ReviewsHolder(trailerView);
         return holder;
     }
@@ -71,14 +74,27 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsH
     @Override
     public void onBindViewHolder( @NonNull ReviewsAdapter.ReviewsHolder holder, int position ) {
 
-        Picasso.get()
-                .load(R.drawable.chappie_big)
-                .placeholder(R.mipmap.ic_launcher)             // placeholder could be improved!!
-                .into(holder.reviewImage);
+        holder.reviewAuthor.setText(reviewsList.get(position).getAuthor());
+        holder.reviewText.setText(reviewsList.get(position).getReviewText());
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        if (null == reviewsList) {
+            return 0;
+        }
+        return reviewsList.size();
+    }
+
+
+
+    public void setReviewsList( ArrayList<MovieReview> reviews){
+
+        reviewsList = reviews;
+        notifyDataSetChanged();
+
     }
 }
+
+
+

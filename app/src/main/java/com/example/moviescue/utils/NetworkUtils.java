@@ -17,8 +17,13 @@ public class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
     public static final String BASE_POSTER_PATH = "https://image.tmdb.org/t/p/";
+    public static final String BASE_TRAILER_VIDEO_PATH = "https://www.youtube.com/watch?v=";    //"https://www.youtube.com/embed/";
+    public static final String BASE_TRAILER_PICTURE_PATH = "https://img.youtube.com/vi/";
+    public static final String ENDING_TRAILER_PICTURE_PATH = "/0.jpg";
     public static final String TMDB_BASE_URL = "https://api.themoviedb.org/3/movie/";
     public static final String API_QUERY_SORT_ = "?sort_by=";
+    public static final String REVIEWS = "/reviews?";
+    public static final String TRAILERS = "/videos?";
     public static final String API_KEY_VALUE = BuildConfig.YOUR_API_KEY;
     public static final String SIZE_92 = "w92";
     public static final String SIZE_154 = "w154";
@@ -94,6 +99,69 @@ public class NetworkUtils {
 
 
     }
+
+
+    public static URL buildReviewsUrl(String id){
+
+        URL url = null;
+
+        Uri builtUri = Uri.parse(TMDB_BASE_URL
+                + id
+                + REVIEWS
+                + API_QUERY_KEY
+                + API_KEY_VALUE)
+                .buildUpon()
+                .build();
+
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "Built URI " + url);
+        return url;
+
+    }
+
+
+    public static URL buildTrailersUrl(String id){
+
+        URL url = null;
+
+        Uri builtUri = Uri.parse(TMDB_BASE_URL
+                + id
+                + TRAILERS
+                + API_QUERY_KEY
+                + API_KEY_VALUE)
+                .buildUpon()
+                .build();
+
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "Built URI " + url);
+        return url;
+
+    }
+
+    public static String movieTrailerPicturePath(String key){
+
+        return BASE_TRAILER_PICTURE_PATH + key + ENDING_TRAILER_PICTURE_PATH;
+    }
+
+
+    public static String movieTrailerVideoPath(String key){
+
+        return BASE_TRAILER_VIDEO_PATH + key;
+    }
+
+
+
+
+
+
 
 
     /**

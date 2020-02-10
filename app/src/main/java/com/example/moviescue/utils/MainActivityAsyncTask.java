@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 
 import java.net.URL;
 
-public class MyAsyncTask extends AsyncTask<Object, Void, String> {
+public class MainActivityAsyncTask extends AsyncTask<Object, Void, String> {
 
     private OnTaskCompleted activityContext;
 
@@ -17,7 +17,7 @@ public class MyAsyncTask extends AsyncTask<Object, Void, String> {
      *
      */
 
-    public MyAsyncTask(OnTaskCompleted context) {
+    public MainActivityAsyncTask( OnTaskCompleted context) {
         this.activityContext = context;
     }
 

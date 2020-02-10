@@ -3,8 +3,6 @@ package com.example.moviescue.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
 public class Movie implements Parcelable {
 
     private String title;
@@ -13,7 +11,10 @@ public class Movie implements Parcelable {
     private String imageLink;
     private String voteAvg;
     private String popularity;
+    private String reviewsJSON;    // This variable is a JSON that contains all available reviews
+    private String trailersJSON;  // This variable is a JSON that contains all available trailersJSON
     private Integer id;
+
 
 
 
@@ -55,6 +56,14 @@ public class Movie implements Parcelable {
         this.id = id;
     }
 
+    public void setReviewsJSON( String reviews ) {
+        this.reviewsJSON = reviews;
+    }
+
+    public void setTrailersJSON( String trailersJSON ) {
+        this.trailersJSON = trailersJSON;
+    }
+
 
     public String getImageLink(){
         return this.imageLink;
@@ -78,6 +87,10 @@ public class Movie implements Parcelable {
 
     public Integer getId() { return id; }
 
+    public String getReviewsJSON() { return reviewsJSON; }
+
+    public String getTrailersJSON() { return trailersJSON;}
+
 
 
 
@@ -90,6 +103,8 @@ public class Movie implements Parcelable {
         voteAvg = in.readString();
         popularity = in.readString();
         id = in.readInt();
+        trailersJSON = in.readString();
+        reviewsJSON = in.readString();
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -119,6 +134,8 @@ public class Movie implements Parcelable {
         dest.writeString(voteAvg);
         dest.writeString(popularity);
         dest.writeInt(id);
+        dest.writeString(trailersJSON);
+        dest.writeString(reviewsJSON);
     }
 }
 

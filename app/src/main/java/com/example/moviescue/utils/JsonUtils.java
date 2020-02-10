@@ -1,6 +1,8 @@
 package com.example.moviescue.utils;
 
 import com.example.moviescue.model.Movie;
+import com.example.moviescue.model.MovieReview;
+import com.example.moviescue.model.MovieTrailer;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -33,7 +35,7 @@ public class JsonUtils {
             JSONObject newMovie;
 
             // iterating over the JSONArray and initializing each movie object to be appended to movieList
-            for (int i = 0; i < MOVIES_PER_API_QUERY; i++) {
+            for (int i = 0; i < queryResults.length(); i++) {
 
                 newMovie = queryResults.getJSONObject(i);
 
@@ -58,20 +60,85 @@ public class JsonUtils {
         return movieList;
     }
 
+
+
+
+
+
+    public static ArrayList<MovieTrailer>  parseTrailersList( String json){
+
+
+
+        ArrayList<MovieTrailer> movieTrailersList = new ArrayList<>();
+
+        try {
+            JSONObject trailerQuery = new JSONObject(json);       // creating json object from string parameter
+            JSONArray queryResults = trailerQuery.getJSONArray("results");        // creating JSONArray where moviesTrailers are contained
+            JSONObject newMovieTrailer;
+
+            // iterating over the JSONArray and initializing each movieTrailer object to be appended to movieTrailerList
+            for (int i = 0; i < queryResults.length(); i++) {
+
+                newMovieTrailer = queryResults.getJSONObject(i);
+
+
+                MovieTrailer trailer = new MovieTrailer();
+                trailer.setSite(newMovieTrailer.optString("site"));
+                trailer.setVideoKey(newMovieTrailer.optString("key"));
+
+                movieTrailersList.add(trailer);
+
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        return movieTrailersList;
+
+    }
+
+
+
+
+
+    public static ArrayList<MovieReview>  parseReviewsList( String json){
+
+        ArrayList<MovieReview> movieReviewsList = new ArrayList<>();
+
+        try {
+            JSONObject reviewQuery = new JSONObject(json);       // creating json object from string parameter
+            JSONArray queryResults = reviewQuery.getJSONArray("results");        // creating JSONArray where moviesReviews are contained
+            JSONObject newMovieReview;
+
+            // iterating over the JSONArray and initializing each movieReview object to be appended to movieReviewsList
+            for (int i = 0; i < queryResults.length(); i++) {
+
+                newMovieReview = queryResults.getJSONObject(i);
+
+
+                MovieReview review = new MovieReview();
+                review.setAuthor(newMovieReview.optString("author"));
+                review.setReviewText(newMovieReview.optString("content"));
+
+                movieReviewsList.add(review);
+
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        return movieReviewsList;
+
+
+    }
+
+
 }
 
 
-//
-//    public static ArrayList<String> parseReviewsList (String json){
-//
-//
-//
-//    }
-//
-//
-//
-//    public static ArrayList<String> parseTrailersList (String json){
-//
-//
-//
-//    }
+
+

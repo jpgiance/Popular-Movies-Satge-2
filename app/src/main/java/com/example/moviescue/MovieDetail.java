@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,13 +15,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.moviescue.adapters.ReviewsAdapter;
 import com.example.moviescue.adapters.TrailersAdapter;
 import com.example.moviescue.model.Movie;
+import com.example.moviescue.model.MovieReview;
+import com.example.moviescue.model.MovieTrailer;
+import com.example.moviescue.utils.DetailActivityAsyncTask;
+import com.example.moviescue.utils.JsonUtils;
 import com.example.moviescue.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 
-public class MovieDetail extends AppCompatActivity {
+public class MovieDetail extends AppCompatActivity implements DetailActivityAsyncTask.OnTaskCompleted {
 
    private Movie detailMovie;
    private TextView title;
@@ -32,19 +38,31 @@ public class MovieDetail extends AppCompatActivity {
     private String YEAR_ERROR = "Release year is not available";
     private String OVERVIEW_ERROR = "Movie overview is not available";
 
-    private ArrayList<String> reviewsList;
-    private ArrayList<String> trailersList;
+    private ArrayList<MovieReview> reviewsList;
+    private ArrayList<MovieTrailer> trailersList;
     private TrailersAdapter trailersAdapter;
     private RecyclerView trailersRecycler;
     private RecyclerView reviewsRecycler;
     private ReviewsAdapter reviewsAdapter;
 
+    private static final int TRAILERS_RESULT_LOADER_ID = 1;
+    private static final int REVIEWS_RESULT_LOADER_ID = 2;
+    private static final String TRAILER_QUERY_URL = "trailer_query";
+    private static final String REVIEW_QUERY_URL = "review_query";
+
     private boolean isFavorite = false;
+
+
+
+
+
+
 
     @Override
     public void onCreate(  Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_movie);
+
 
 
         // ....finding views
@@ -125,6 +143,9 @@ public class MovieDetail extends AppCompatActivity {
                         .load(NetworkUtils.BASE_POSTER_PATH + NetworkUtils.SIZE_185 + detailMovie.getImageLink())
                         .placeholder(R.mipmap.ic_launcher)
                         .into(poster);
+
+                loadAdditionalMovieData(detailMovie.getId());
+
             }
             else{
                 Log.d("Activity main to detail", "Intent has no attachment");
@@ -150,4 +171,42 @@ public class MovieDetail extends AppCompatActivity {
         }
     }
 
+
+
+
+
+    private void loadAdditionalMovieData(Integer id){
+
+        URL queryTrailersUrl = NetworkUtils.buildTrailersUrl(id.toString());
+        URL queryReviewsUrl = NetworkUtils.buildReviewsUrl(id.toString());
+
+        DetailActivityAsyncTask loadAdditionalData = new DetailActivityAsyncTask(MovieDetail.this);
+        loadAdditionalData.execute(queryTrailersUrl, queryReviewsUrl);
+
+
+    }
+
+
+    @Override
+    public void onTaskCompleted( ArrayList<String> response ) {
+
+        if(response != null){
+            detailMovie.setTrailersJSON(response.get(0));
+            detailMovie.setReviewsJSON(response.get(1));
+
+            trailersList = JsonUtils.parseTrailersList(response.get(0));
+            reviewsList = JsonUtils.parseReviewsList(response.get(1));
+
+            trailersAdapter.setTrailersList(trailersList);
+            reviewsAdapter.setReviewsList(reviewsList);
+        }
+    }
+
+    @Override
+    public void preExecute() {
+
+        return;
+    }
 }
+
+

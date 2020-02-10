@@ -3,7 +3,7 @@ package com.example.moviescue;
 import com.example.moviescue.adapters.MovieAdapter;
 import com.example.moviescue.model.Movie;
 import com.example.moviescue.utils.JsonUtils;
-import com.example.moviescue.utils.MyAsyncTask;
+import com.example.moviescue.utils.MainActivityAsyncTask;
 import com.example.moviescue.adapters.MovieAdapter.MovieAdapterOnClickHandler;
 import com.example.moviescue.utils.NetworkUtils;
 
@@ -17,7 +17,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,11 +27,10 @@ import android.util.DisplayMetrics;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapterOnClickHandler,
                                                                 SwipeRefreshLayout.OnRefreshListener,
-                                                                MyAsyncTask.OnTaskCompleted {
+                                                                MainActivityAsyncTask.OnTaskCompleted {
 
     private RecyclerView movieRecycler;
     private MovieAdapter adapter;
@@ -240,8 +238,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         movieRecycler.setVisibility(View.VISIBLE);
 
 
-        MyAsyncTask FetchMovieData = new MyAsyncTask(MainActivity.this);
-        FetchMovieData.execute(urlBuilder(filter));
+        MainActivityAsyncTask fetchMovieData = new MainActivityAsyncTask(MainActivity.this);
+        fetchMovieData.execute(urlBuilder(filter));
 
 
     }
