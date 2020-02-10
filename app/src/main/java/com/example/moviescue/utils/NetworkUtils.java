@@ -17,7 +17,7 @@ public class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
     public static final String BASE_POSTER_PATH = "https://image.tmdb.org/t/p/";
-    public static final String BASE_TRAILER_VIDEO_PATH = "https://www.youtube.com/watch?v=";    //"https://www.youtube.com/embed/";
+    public static final String BASE_TRAILER_VIDEO_PATH = "https://www.youtube.com/watch?v=";
     public static final String BASE_TRAILER_PICTURE_PATH = "https://img.youtube.com/vi/";
     public static final String ENDING_TRAILER_PICTURE_PATH = "/0.jpg";
     public static final String TMDB_BASE_URL = "https://api.themoviedb.org/3/movie/";

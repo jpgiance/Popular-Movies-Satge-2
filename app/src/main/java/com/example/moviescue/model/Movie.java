@@ -3,9 +3,25 @@ package com.example.moviescue.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+
+@Entity(tableName = "movie")
 public class Movie implements Parcelable {
 
+
+
+
+    @PrimaryKey(autoGenerate = true)
+    private int tableId;
     private String title;
+
+
+
+
+
     private String releaseDate;
     private String overview;
     private String imageLink;
@@ -18,10 +34,28 @@ public class Movie implements Parcelable {
 
 
 
-
+    @Ignore
     public Movie(String movieTitle){
         this.title = movieTitle;
     }
+
+
+    public Movie( int tableId, String title, String releaseDate, String overview, String imageLink, String voteAvg, String popularity, String reviewsJSON, String trailersJSON, Integer id ) {
+        this.tableId = tableId;
+        this.title = title;
+        this.releaseDate = releaseDate;
+        this.overview = overview;
+        this.imageLink = imageLink;
+        this.voteAvg = voteAvg;
+        this.popularity = popularity;
+        this.reviewsJSON = reviewsJSON;
+        this.trailersJSON = trailersJSON;
+        this.id = id;
+    }
+
+
+
+
 
 
 
@@ -64,6 +98,16 @@ public class Movie implements Parcelable {
         this.trailersJSON = trailersJSON;
     }
 
+    public void setTableId( int tableId ) {
+        this.tableId = tableId;
+    }
+
+    public void setTitle( String title ) {
+        this.title = title;
+    }
+
+
+
 
     public String getImageLink(){
         return this.imageLink;
@@ -91,6 +135,9 @@ public class Movie implements Parcelable {
 
     public String getTrailersJSON() { return trailersJSON;}
 
+    public int getTableId() {  return tableId; }
+
+    public String getPopularity() { return popularity; }
 
 
 
