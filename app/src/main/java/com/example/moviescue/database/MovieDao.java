@@ -10,7 +10,6 @@ import androidx.room.Update;
 
 import com.example.moviescue.model.Movie;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -21,16 +20,16 @@ public interface MovieDao {
     LiveData<List<Movie>> loadAllMovies();
 
     @Insert
-    void insertTask(Movie movieEntry);
+    void insertTask( Movie movieEntry );
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateTask(Movie movieEntry);
+    void updateTask( Movie movieEntry );
 
     @Delete
-    void deleteTask(Movie movieEntry);
+    void deleteTask( Movie movieEntry );
 
     @Query("SELECT * FROM movie WHERE id = :id")
-    Movie retrieveMovieId( int id);
+    Movie retrieveMovieId( int id );
 
 
 }

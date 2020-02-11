@@ -9,20 +9,15 @@ public class MainActivityAsyncTask extends AsyncTask<Object, Void, String> {
     private OnTaskCompleted activityContext;
 
 
-
-
     /**
      * constructor assigns activity context
      * to local variable for pre/post execution task
-     *
      */
 
-    public MainActivityAsyncTask( OnTaskCompleted context) {
+    public MainActivityAsyncTask( OnTaskCompleted context ) {
+
         this.activityContext = context;
     }
-
-
-
 
 
     @Override
@@ -34,10 +29,8 @@ public class MainActivityAsyncTask extends AsyncTask<Object, Void, String> {
     }
 
 
-
-
     @Override
-    protected String doInBackground(Object[] objects) {
+    protected String doInBackground( Object[] objects ) {
 
         if (objects == null) {
             return null;
@@ -55,9 +48,6 @@ public class MainActivityAsyncTask extends AsyncTask<Object, Void, String> {
     }
 
 
-
-
-
     @Override
     protected void onPostExecute( String queryResponse ) {
 
@@ -65,16 +55,14 @@ public class MainActivityAsyncTask extends AsyncTask<Object, Void, String> {
     }
 
 
-
-
-/**
- * This interface can be implemented in the activity for handling
- * response and pre-execution task
- *
- */
+    /**
+     * This interface can be implemented in the activity for handling
+     * response and pre-execution task
+     */
 
     public interface OnTaskCompleted {
-        void onTaskCompleted(String response);
+        void onTaskCompleted( String response );
+
         void preExecute();
     }
 

@@ -11,16 +11,12 @@ import com.example.moviescue.utils.NetworkUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.lifecycle.ViewModelStore;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.app.Application;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -39,8 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapterOnClickHandler,
-                                                                SwipeRefreshLayout.OnRefreshListener,
-                                                                MainActivityAsyncTask.OnTaskCompleted {
+        SwipeRefreshLayout.OnRefreshListener,
+        MainActivityAsyncTask.OnTaskCompleted {
 
     private RecyclerView movieRecycler;
     private MovieAdapter adapter;
@@ -59,26 +55,24 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     private final String FAVORITE = "favorite";
     private String filter = POPULARITY;        // By default filter popularity is used
     private float POSTER_WIDTH = 185;
-    private float POSTER_HEIGHT =  300;
-    private float ASPECT_RATIO = POSTER_WIDTH/POSTER_HEIGHT;
+    private float POSTER_HEIGHT = 300;
+    private float ASPECT_RATIO = POSTER_WIDTH / POSTER_HEIGHT;
     private ArrayList<Movie> moviesList;
 
     // Constant for logging
     private static final String TAG = MainActivity.class.getSimpleName();
 
 
-
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState == null || !savedInstanceState.containsKey("moviesList")) {
+        if (savedInstanceState == null || !savedInstanceState.containsKey("moviesList")) {
 
             // ....if no state was saved
             moviesList = new ArrayList<Movie>();
 
-        }
-        else {
+        } else {
             moviesList = savedInstanceState.getParcelableArrayList("moviesList");
             filter = savedInstanceState.getString("filterId");
         }
@@ -86,13 +80,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         setContentView(R.layout.activity_main);
 
         // ....finding views
-//        popularityFilter = findViewById(R.id.sort_1);
-//        reviewFilter = findViewById(R.id.sort_2);
-//        favoriteFilter = findViewById(R.id.sort_3);
         errorMessage = findViewById(R.id.error_message);
         movieRecycler = findViewById(R.id.movie_recycler);
         updateIndicator = findViewById(R.id.update_indicator);
-
 
 
         // ....setting up RecyclerView
@@ -106,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         swipeRefreshLayout = findViewById(R.id.swipeLayout);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-
+        // ....creating database
         movieDb = MovieDatabase.getInstance(getApplicationContext());
         setupViewModel();
 
@@ -115,10 +105,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
 
     }
-
-
-
-
 
 
     @Override
@@ -130,9 +116,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     }
 
 
-
-
-
     /**
      * This method is overridden by MainActivity class in order to handle RecyclerView item
      * clicks.
@@ -141,15 +124,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
      */
 
     @Override
-    public void onClick(Movie movie) {
+    public void onClick( Movie movie ) {
         Context context = this;
         Class movieDetail = MovieDetail.class;
         Intent newIntent = new Intent(context, movieDetail);
         newIntent.putExtra("movie", movie);
         startActivity(newIntent);
     }
-
-
 
 
     @Override
@@ -167,32 +148,29 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     }
 
 
-
-
-
     @Override
     public boolean onOptionsItemSelected( @NonNull MenuItem item ) {
         int id = item.getItemId();
 
-        if (id == R.id.sort_1){
+        if (id == R.id.sort_1) {
 
             setFilter(POPULARITY);
             updateActivity(filter);
             return true;
 
-        }else if(id == R.id.sort_2){
+        } else if (id == R.id.sort_2) {
 
             setFilter(REVIEW);
             updateActivity(filter);
             return true;
 
-        }else if (id == R.id.sort_3){
+        } else if (id == R.id.sort_3) {
 
             setFilter(FAVORITE);
             updateActivity(filter);
             return true;
 
-        }else{
+        } else {
             return super.onOptionsItemSelected(item);
         }
 
@@ -200,10 +178,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     }
 
 
-
-
-
-    private void setFilter(String filterId) {
+    private void setFilter( String filterId ) {
 
 
         switch (filterId) {
@@ -214,7 +189,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
                 favoriteFilter.setChecked(false);
                 filter = POPULARITY;
                 break;
-
 
 
             case REVIEW:
@@ -233,7 +207,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
                 break;
 
 
-            default:break;
+            default:
+                break;
         }
 
     }
@@ -246,9 +221,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     }
 
 
-
-
-
     private void showErrorMessage() {
 
         movieRecycler.setVisibility(View.INVISIBLE);
@@ -256,19 +228,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     }
 
 
-
-
-
     /**
      * This method will get the user's sorting preference and
      * invoke other method to query the TMDB api
      */
 
-    private void updateActivity(String filter){
+    private void updateActivity( String filter ) {
 
-        if (filter.equals(FAVORITE)){
+        if (filter.equals(FAVORITE)) {
             setupViewModel();
-        }else{
+        } else {
             errorMessage.setVisibility(View.INVISIBLE);
             movieRecycler.setVisibility(View.VISIBLE);
 
@@ -281,10 +250,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     }
 
 
-
-
     @Override
-    public void onSaveInstanceState( @NonNull Bundle outState) {
+    public void onSaveInstanceState( @NonNull Bundle outState ) {
         outState.putParcelableArrayList("moviesList", moviesList);
         outState.putString("filterId", filter);
         super.onSaveInstanceState(outState);
@@ -295,8 +262,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
 
         updateIndicator.setVisibility(View.VISIBLE);
     }
-
-
 
 
     @Override
@@ -314,9 +279,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     }
 
 
-
-
-    private int numberOfColumns(){
+    private int numberOfColumns() {
 
         // get Display dimensions
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -327,12 +290,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         //get Display orientation
         int orientation = getResources().getConfiguration().orientation;
 
-        if(orientation == Configuration.ORIENTATION_PORTRAIT){
-            float columns = (width*2)/(height*ASPECT_RATIO);
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            float columns = (width * 2) / (height * ASPECT_RATIO);
             return Math.round(columns);
         }
-        if(orientation == Configuration.ORIENTATION_LANDSCAPE){
-            float columns = (width*2)/(height*ASPECT_RATIO);
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            float columns = (width * 2) / (height * ASPECT_RATIO);
             return Math.round(columns);
         }
 
@@ -340,8 +303,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
     }
 
 
-
-    private URL urlBuilder(String filter){
+    private URL urlBuilder( String filter ) {
 
         URL apiQuery = NetworkUtils.buildUrl(filter);
 
@@ -354,10 +316,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
         MainViewModel viewModel = new MainViewModel(getApplication());
         viewModel.getMovies().observe(this, new Observer<List<Movie>>() {
             @Override
-            public void onChanged(@Nullable List<Movie> movieEntries) {
+            public void onChanged( @Nullable List<Movie> movieEntries ) {
                 Log.d(TAG, "Updating list of tasks from LiveData in ViewModel");
 
-                if ( filter.equals(FAVORITE)){
+                if (filter.equals(FAVORITE)) {
                     moviesList = (ArrayList<Movie>) movieEntries;
                     showMoviesView();
                     adapter.setMoviesList(moviesList);
@@ -366,25 +328,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapterOnCli
             }
         });
     }
-
-
-
-//    private void retrieveFavoriteMoviesFromDatabase(){
-//
-//        Log.d(TAG, "Actively retrieving the favorite movies from database");
-//
-//        final LiveData<List<Movie>> movies = movieDb.movieDao().loadAllMovies();
-//        movies.observe();
-//
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        });
-//    }
-
-
 
 
 }

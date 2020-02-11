@@ -30,8 +30,8 @@ import java.util.ArrayList;
 
 public class MovieDetail extends AppCompatActivity implements DetailActivityAsyncTask.OnTaskCompleted {
 
-   private Movie detailMovie;
-   private TextView title;
+    private Movie detailMovie;
+    private TextView title;
     private TextView year;
     private TextView vote;
     private TextView overview;
@@ -49,23 +49,14 @@ public class MovieDetail extends AppCompatActivity implements DetailActivityAsyn
     private RecyclerView reviewsRecycler;
     private ReviewsAdapter reviewsAdapter;
 
-    private static final int TRAILERS_RESULT_LOADER_ID = 1;
-    private static final int REVIEWS_RESULT_LOADER_ID = 2;
-    private static final String TRAILER_QUERY_URL = "trailer_query";
-    private static final String REVIEW_QUERY_URL = "review_query";
 
     private boolean isFavorite = false;
 
     private MovieDatabase movieDb;
 
 
-
-
-
-
-
     @Override
-    public void onCreate(  Bundle savedInstanceState) {
+    public void onCreate( Bundle savedInstanceState ) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_movie);
 
@@ -83,8 +74,6 @@ public class MovieDetail extends AppCompatActivity implements DetailActivityAsyn
         favoriteIcon = findViewById(R.id.button);
 
 
-
-
         // ....setting up trailersAdapter
         trailersAdapter = new TrailersAdapter(this);
         trailersRecycler.setAdapter(trailersAdapter);
@@ -99,24 +88,15 @@ public class MovieDetail extends AppCompatActivity implements DetailActivityAsyn
         reviewsRecycler.setHasFixedSize(true);
 
 
-
-
-
-
-
         // ....getting intent from previous Activity
         Intent detailIntent = getIntent();
         populateDetailActivity(detailIntent);
 
 
-
-
     }
 
 
-
-
-    private void populateDetailActivity(Intent detailIntent){
+    private void populateDetailActivity( Intent detailIntent ) {
 
         if (detailIntent != null) {
             if (detailIntent.hasExtra("movie")) {
@@ -128,19 +108,19 @@ public class MovieDetail extends AppCompatActivity implements DetailActivityAsyn
                 checkIfFavorite();
 
                 // ....resizing the title if to large
-                if (detailMovie.getTitle().length() > 14 ){
+                if (detailMovie.getTitle().length() > 14) {
                     title.setTextSize(30);
                     title.setText(detailMovie.getTitle());
-                }else{
+                } else {
                     title.setTextSize(55);
                     title.setText(detailMovie.getTitle());
                 }
 
 
                 // ....populating detail screen
-                if(!detailMovie.getReleaseDate().equals("")){
+                if (!detailMovie.getReleaseDate().equals("")) {
                     year.setText(detailMovie.getReleaseDate().substring(0, 4));
-                }else {
+                } else {
                     year.setTextSize(14);
                     year.setText(YEAR_ERROR);
                 }
@@ -156,12 +136,10 @@ public class MovieDetail extends AppCompatActivity implements DetailActivityAsyn
 
                 loadAdditionalMovieData(detailMovie.getId());
 
-            }
-            else{
+            } else {
                 Log.d("Activity main to detail", "Intent has no attachment");
             }
-        }
-        else{
+        } else {
             Log.d("Activity main to detail", "Intent is null");
         }
     }
@@ -173,7 +151,7 @@ public class MovieDetail extends AppCompatActivity implements DetailActivityAsyn
             public void run() {
 
                 Movie movieHolder = movieDb.movieDao().retrieveMovieId(detailMovie.getId());
-                if (movieHolder != null){
+                if (movieHolder != null) {
 
                     detailMovie = movieHolder;
                     isFavorite = true;
@@ -181,7 +159,7 @@ public class MovieDetail extends AppCompatActivity implements DetailActivityAsyn
                     favoriteIcon.setImageResource(R.drawable.ic_favorite_red);
 
 
-                }else{
+                } else {
                     isFavorite = false;
                     isFavoriteCheckFinish = true;
                     favoriteIcon.setImageResource(R.drawable.ic_favorite_grey);
@@ -192,14 +170,13 @@ public class MovieDetail extends AppCompatActivity implements DetailActivityAsyn
         });
 
 
-
     }
 
 
-    public void addToFavorite( View view){
+    public void addToFavorite( View view ) {
 
 
-        if (!isFavorite){
+        if (!isFavorite) {
 
             isFavorite = true;
             favoriteIcon.setImageResource(R.drawable.ic_favorite_red);
@@ -212,7 +189,7 @@ public class MovieDetail extends AppCompatActivity implements DetailActivityAsyn
 
                 }
             });
-        }else {
+        } else {
 
             favoriteIcon.setImageResource(R.drawable.ic_favorite_grey);
             isFavorite = false;
@@ -227,13 +204,12 @@ public class MovieDetail extends AppCompatActivity implements DetailActivityAsyn
     }
 
 
+    private void loadAdditionalMovieData( Integer id ) {
+        while (!isFavoriteCheckFinish) {
+        }
 
 
-
-    private void loadAdditionalMovieData(Integer id){
-
-        while (!isFavoriteCheckFinish){}
-        if(isFavorite){
+        if (isFavorite) {
 
             trailersList = JsonUtils.parseTrailersList(detailMovie.getTrailersJSON());
             reviewsList = JsonUtils.parseReviewsList(detailMovie.getReviewsJSON());
@@ -241,7 +217,7 @@ public class MovieDetail extends AppCompatActivity implements DetailActivityAsyn
             trailersAdapter.setTrailersList(trailersList);
             reviewsAdapter.setReviewsList(reviewsList);
 
-        }else{
+        } else {
 
             URL queryTrailersUrl = NetworkUtils.buildTrailersUrl(id.toString());
             URL queryReviewsUrl = NetworkUtils.buildReviewsUrl(id.toString());
@@ -252,14 +228,13 @@ public class MovieDetail extends AppCompatActivity implements DetailActivityAsyn
         }
 
 
-
     }
 
 
     @Override
     public void onTaskCompleted( ArrayList<String> response ) {
 
-        if(response != null){
+        if (response != null) {
             detailMovie.setTrailersJSON(response.get(0));
             detailMovie.setReviewsJSON(response.get(1));
 

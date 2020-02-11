@@ -10,13 +10,15 @@ public class DetailActivityAsyncTask extends AsyncTask<Object, Void, Object> {
 
     private OnTaskCompleted activityContext;
 
+    /**
+     * constructor assigns activity context
+     * to local variable for pre/post execution task
+     */
 
-
-    public DetailActivityAsyncTask(OnTaskCompleted context) {
+    public DetailActivityAsyncTask( OnTaskCompleted context ) {
 
         this.activityContext = context;
     }
-
 
 
     @Override
@@ -25,8 +27,6 @@ public class DetailActivityAsyncTask extends AsyncTask<Object, Void, Object> {
 
 
     }
-
-
 
 
     @Override
@@ -54,24 +54,21 @@ public class DetailActivityAsyncTask extends AsyncTask<Object, Void, Object> {
 
 
     @Override
-    protected void onPostExecute( Object response) {
+    protected void onPostExecute( Object response ) {
 
 
-        activityContext.onTaskCompleted((ArrayList<String>)response);
+        activityContext.onTaskCompleted((ArrayList<String>) response);
     }
-
-
-
 
 
     /**
      * This interface can be implemented in the activity for handling
      * response and pre-execution task
-     *
      */
 
     public interface OnTaskCompleted {
-        void onTaskCompleted(ArrayList<String> response);
+        void onTaskCompleted( ArrayList<String> response );
+
         void preExecute();
     }
 

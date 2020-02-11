@@ -15,17 +15,15 @@ public class JsonUtils {
     private static final int MOVIES_PER_API_QUERY = 20;
 
 
-
-/**
- * This method parses the json obtained from TMDB api and return a list of movies
- *
- * @param json          JSON type String from TMDB api requested
- *
- * @return List of Movie objects from JSON String
-*/
+    /**
+     * This method parses the json obtained from TMDB api and return a list of movies
+     *
+     * @param json JSON type String from TMDB api requested
+     * @return List of Movie objects from JSON String
+     */
 
 
-    public static ArrayList<Movie> parseMovieListJson (String json){
+    public static ArrayList<Movie> parseMovieListJson( String json ) {
 
         ArrayList<Movie> movieList = new ArrayList<>();      // creating List of Movie objects to be returned
 
@@ -46,13 +44,13 @@ public class JsonUtils {
                 movie.setImageLink(newMovie.optString("poster_path"));
                 movie.setId((Integer) newMovie.get("id"));
                 movie.setVoteAvg(JSONObject.numberToString((Number) newMovie.get("vote_average")));
-                movie.setPopularity(JSONObject.numberToString((Number)newMovie.get("popularity")));
+                movie.setPopularity(JSONObject.numberToString((Number) newMovie.get("popularity")));
 
                 movieList.add(movie);
 
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -61,12 +59,14 @@ public class JsonUtils {
     }
 
 
+    /**
+     * This method parses the json obtained from TMDB api and return a list of moviesTrailers
+     *
+     * @param json JSON type String from TMDB api requested
+     * @return List of MovieTrailer objects from JSON String
+     */
 
-
-
-
-    public static ArrayList<MovieTrailer>  parseTrailersList( String json){
-
+    public static ArrayList<MovieTrailer> parseTrailersList( String json ) {
 
 
         ArrayList<MovieTrailer> movieTrailersList = new ArrayList<>();
@@ -90,7 +90,7 @@ public class JsonUtils {
 
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -101,9 +101,14 @@ public class JsonUtils {
 
 
 
+    /**
+     * This method parses the json obtained from TMDB api and return a list of moviesReviews
+     *
+     * @param json JSON type String from TMDB api requested
+     * @return List of MovieReview objects from JSON String
+     */
 
-
-    public static ArrayList<MovieReview>  parseReviewsList( String json){
+    public static ArrayList<MovieReview> parseReviewsList( String json ) {
 
         ArrayList<MovieReview> movieReviewsList = new ArrayList<>();
 
@@ -126,7 +131,7 @@ public class JsonUtils {
 
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

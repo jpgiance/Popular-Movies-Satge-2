@@ -40,19 +40,16 @@ public class NetworkUtils {
 
 
 
-
-
-
     /**
      * This method takes a String that encodes the filter selected by the user and
      * builds the URL ready to be use in the API query
      *
      * @param sortPreference encodes the filter selected by the user
-     *
-     * @return URL to be used for TMDB API requests
+     * @return url The URL to fetch the HTTP response from.
+     * @throws MalformedURLException
      */
 
-    public static URL buildUrl(String sortPreference) {
+    public static URL buildUrl( String sortPreference ) {
 
         URL url = null;
 
@@ -101,7 +98,16 @@ public class NetworkUtils {
     }
 
 
-    public static URL buildReviewsUrl(String id){
+    /**
+     * This method takes a movie's id selected by the user and
+     * builds the URL ready to be use in the API query
+     *
+     * @param id movie's id
+     * @return url The URL to fetch the HTTP response from.
+     * @throws MalformedURLException
+     */
+
+    public static URL buildReviewsUrl( String id ) {
 
         URL url = null;
 
@@ -124,7 +130,16 @@ public class NetworkUtils {
     }
 
 
-    public static URL buildTrailersUrl(String id){
+    /**
+     * This method takes a movie's id selected by the user and
+     * builds the URL ready to be use in the API query
+     *
+     * @param id movie's id
+     * @return url The URL to fetch the HTTP response from.
+     * @throws MalformedURLException
+     */
+
+    public static URL buildTrailersUrl( String id ) {
 
         URL url = null;
 
@@ -146,22 +161,15 @@ public class NetworkUtils {
 
     }
 
-    public static String movieTrailerPicturePath(String key){
+    public static String movieTrailerPicturePath( String key ) {
 
         return BASE_TRAILER_PICTURE_PATH + key + ENDING_TRAILER_PICTURE_PATH;
     }
 
-
-    public static String movieTrailerVideoPath(String key){
+    public static String movieTrailerVideoPath( String key ) {
 
         return BASE_TRAILER_VIDEO_PATH + key;
     }
-
-
-
-
-
-
 
 
     /**
@@ -171,7 +179,7 @@ public class NetworkUtils {
      * @return The contents of the HTTP response.
      * @throws IOException Related to network and stream reading
      */
-    public static String getResponseFromHttpUrl(URL url) throws IOException {
+    public static String getResponseFromHttpUrl( URL url ) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = urlConnection.getInputStream();
@@ -189,7 +197,6 @@ public class NetworkUtils {
             urlConnection.disconnect();
         }
     }
-
 
 
 }

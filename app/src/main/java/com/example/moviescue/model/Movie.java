@@ -12,8 +12,6 @@ import androidx.room.PrimaryKey;
 public class Movie implements Parcelable {
 
 
-
-
     @PrimaryKey
     private int id;
     private int isFavorite;
@@ -27,11 +25,8 @@ public class Movie implements Parcelable {
     private String trailersJSON;  // This variable is a JSON that contains all available trailersJSON
 
 
-
-
-
     @Ignore
-    public Movie(String movieTitle){
+    public Movie( String movieTitle ) {
         this.title = movieTitle;
     }
 
@@ -51,33 +46,29 @@ public class Movie implements Parcelable {
     }
 
 
+    // ....setters
 
-
-
-
-
-
-    public void setReleaseDate( String date){
+    public void setReleaseDate( String date ) {
 
         this.releaseDate = date;
     }
 
-    public void setOverview(String summary){
+    public void setOverview( String summary ) {
 
         this.overview = summary;
     }
 
-    public void setImageLink(String link){
+    public void setImageLink( String link ) {
 
         this.imageLink = link;
     }
 
-    public void setVoteAvg(String vote){
+    public void setVoteAvg( String vote ) {
 
         this.voteAvg = vote;
     }
 
-    public void setPopularity(String popular){
+    public void setPopularity( String popular ) {
 
         this.popularity = popular;
     }
@@ -107,38 +98,55 @@ public class Movie implements Parcelable {
 
 
 
-    public String getImageLink(){
+
+
+    // ....getters
+
+    public String getImageLink() {
         return this.imageLink;
     }
 
-    public String getTitle(){
+    public String getTitle() {
         return this.title;
     }
 
-    public String getReleaseDate(){
+    public String getReleaseDate() {
         return this.releaseDate;
     }
 
-    public String getOverview(){
+    public String getOverview() {
         return this.overview;
     }
 
-    public String getVoteAvg(){
+    public String getVoteAvg() {
         return this.voteAvg;
     }
 
-    public int getId() { return id; }
+    public int getId() {
+        return id;
+    }
 
-    public String getReviewsJSON() { return reviewsJSON; }
+    public String getReviewsJSON() {
+        return reviewsJSON;
+    }
 
-    public String getTrailersJSON() { return trailersJSON;}
+    public String getTrailersJSON() {
+        return trailersJSON;
+    }
 
-    public String getPopularity() { return popularity; }
+    public String getPopularity() {
+        return popularity;
+    }
 
-    public int getIsFavorite() { return isFavorite;  }
+    public int getIsFavorite() {
+        return isFavorite;
+    }
 
 
 
+
+
+    // ....parcelable implementation
 
     protected Movie( Parcel in ) {
         title = in.readString();

@@ -6,11 +6,8 @@ public class MovieReview {
     private String reviewText;
 
 
-
     public MovieReview() {
     }
-
-
 
 
     public String getAuthor() {

@@ -6,7 +6,6 @@ public class MovieTrailer {
     private String videoKey;
 
 
-
     public MovieTrailer() {
     }
 
