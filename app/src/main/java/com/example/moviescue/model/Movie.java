@@ -14,14 +14,10 @@ public class Movie implements Parcelable {
 
 
 
-    @PrimaryKey(autoGenerate = true)
-    private int tableId;
+    @PrimaryKey
+    private int id;
+    private int isFavorite;
     private String title;
-
-
-
-
-
     private String releaseDate;
     private String overview;
     private String imageLink;
@@ -29,7 +25,7 @@ public class Movie implements Parcelable {
     private String popularity;
     private String reviewsJSON;    // This variable is a JSON that contains all available reviews
     private String trailersJSON;  // This variable is a JSON that contains all available trailersJSON
-    private Integer id;
+
 
 
 
@@ -40,8 +36,8 @@ public class Movie implements Parcelable {
     }
 
 
-    public Movie( int tableId, String title, String releaseDate, String overview, String imageLink, String voteAvg, String popularity, String reviewsJSON, String trailersJSON, Integer id ) {
-        this.tableId = tableId;
+    public Movie( String title, String releaseDate, String overview, String imageLink, String voteAvg, String popularity, String reviewsJSON, String trailersJSON, int id, int isFavorite ) {
+
         this.title = title;
         this.releaseDate = releaseDate;
         this.overview = overview;
@@ -51,6 +47,7 @@ public class Movie implements Parcelable {
         this.reviewsJSON = reviewsJSON;
         this.trailersJSON = trailersJSON;
         this.id = id;
+        this.isFavorite = isFavorite;
     }
 
 
@@ -85,7 +82,7 @@ public class Movie implements Parcelable {
         this.popularity = popular;
     }
 
-    public void setId( Integer id ) {
+    public void setId( int id ) {
 
         this.id = id;
     }
@@ -98,12 +95,13 @@ public class Movie implements Parcelable {
         this.trailersJSON = trailersJSON;
     }
 
-    public void setTableId( int tableId ) {
-        this.tableId = tableId;
-    }
 
     public void setTitle( String title ) {
         this.title = title;
+    }
+
+    public void setIsFavorite( int isFavorite ) {
+        this.isFavorite = isFavorite;
     }
 
 
@@ -129,15 +127,15 @@ public class Movie implements Parcelable {
         return this.voteAvg;
     }
 
-    public Integer getId() { return id; }
+    public int getId() { return id; }
 
     public String getReviewsJSON() { return reviewsJSON; }
 
     public String getTrailersJSON() { return trailersJSON;}
 
-    public int getTableId() {  return tableId; }
-
     public String getPopularity() { return popularity; }
+
+    public int getIsFavorite() { return isFavorite;  }
 
 
 
@@ -152,6 +150,7 @@ public class Movie implements Parcelable {
         id = in.readInt();
         trailersJSON = in.readString();
         reviewsJSON = in.readString();
+        isFavorite = in.readInt();
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -183,6 +182,7 @@ public class Movie implements Parcelable {
         dest.writeInt(id);
         dest.writeString(trailersJSON);
         dest.writeString(reviewsJSON);
+        dest.writeInt(isFavorite);
     }
 }
 

@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviescue.adapters.ReviewsAdapter;
 import com.example.moviescue.adapters.TrailersAdapter;
+import com.example.moviescue.database.MovieDatabase;
+import com.example.moviescue.executor.AppExecutors;
 import com.example.moviescue.model.Movie;
 import com.example.moviescue.model.MovieReview;
 import com.example.moviescue.model.MovieTrailer;
@@ -34,9 +36,11 @@ public class MovieDetail extends AppCompatActivity implements DetailActivityAsyn
     private TextView vote;
     private TextView overview;
     private ImageView poster;
+    private ImageButton favoriteIcon;
 
     private String YEAR_ERROR = "Release year is not available";
     private String OVERVIEW_ERROR = "Movie overview is not available";
+    private Boolean isFavoriteCheckFinish = false;
 
     private ArrayList<MovieReview> reviewsList;
     private ArrayList<MovieTrailer> trailersList;
@@ -52,6 +56,8 @@ public class MovieDetail extends AppCompatActivity implements DetailActivityAsyn
 
     private boolean isFavorite = false;
 
+    private MovieDatabase movieDb;
+
 
 
 
@@ -64,6 +70,7 @@ public class MovieDetail extends AppCompatActivity implements DetailActivityAsyn
         setContentView(R.layout.detail_movie);
 
 
+        movieDb = MovieDatabase.getInstance(getApplicationContext());
 
         // ....finding views
         title = findViewById(R.id.movie_title);
@@ -73,6 +80,7 @@ public class MovieDetail extends AppCompatActivity implements DetailActivityAsyn
         poster = findViewById(R.id.movie_poster);
         trailersRecycler = findViewById(R.id.trailer_recycler);
         reviewsRecycler = findViewById(R.id.review_recycler);
+        favoriteIcon = findViewById(R.id.button);
 
 
 
@@ -117,6 +125,8 @@ public class MovieDetail extends AppCompatActivity implements DetailActivityAsyn
                 detailMovie = (Movie) detailIntent.getParcelableExtra("movie");
 
 
+                checkIfFavorite();
+
                 // ....resizing the title if to large
                 if (detailMovie.getTitle().length() > 14 ){
                     title.setTextSize(30);
@@ -156,17 +166,62 @@ public class MovieDetail extends AppCompatActivity implements DetailActivityAsyn
         }
     }
 
+    private void checkIfFavorite() {
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                Movie movieHolder = movieDb.movieDao().retrieveMovieId(detailMovie.getId());
+                if (movieHolder != null){
+
+                    detailMovie = movieHolder;
+                    isFavorite = true;
+                    isFavoriteCheckFinish = true;
+                    favoriteIcon.setImageResource(R.drawable.ic_favorite_red);
+
+
+                }else{
+                    isFavorite = false;
+                    isFavoriteCheckFinish = true;
+                    favoriteIcon.setImageResource(R.drawable.ic_favorite_grey);
+
+                }
+
+            }
+        });
+
+
+
+    }
 
 
     public void addToFavorite( View view){
 
-        ImageButton favoriteIcon = (ImageButton) view;
+
         if (!isFavorite){
+
             isFavorite = true;
             favoriteIcon.setImageResource(R.drawable.ic_favorite_red);
+
+            final Movie movieFavorite = detailMovie;
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    movieDb.movieDao().insertTask(movieFavorite);
+
+                }
+            });
         }else {
+
             favoriteIcon.setImageResource(R.drawable.ic_favorite_grey);
             isFavorite = false;
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    movieDb.movieDao().deleteTask(detailMovie);
+                }
+            });
 
         }
     }
@@ -177,11 +232,25 @@ public class MovieDetail extends AppCompatActivity implements DetailActivityAsyn
 
     private void loadAdditionalMovieData(Integer id){
 
-        URL queryTrailersUrl = NetworkUtils.buildTrailersUrl(id.toString());
-        URL queryReviewsUrl = NetworkUtils.buildReviewsUrl(id.toString());
+        while (!isFavoriteCheckFinish){}
+        if(isFavorite){
 
-        DetailActivityAsyncTask loadAdditionalData = new DetailActivityAsyncTask(MovieDetail.this);
-        loadAdditionalData.execute(queryTrailersUrl, queryReviewsUrl);
+            trailersList = JsonUtils.parseTrailersList(detailMovie.getTrailersJSON());
+            reviewsList = JsonUtils.parseReviewsList(detailMovie.getReviewsJSON());
+
+            trailersAdapter.setTrailersList(trailersList);
+            reviewsAdapter.setReviewsList(reviewsList);
+
+        }else{
+
+            URL queryTrailersUrl = NetworkUtils.buildTrailersUrl(id.toString());
+            URL queryReviewsUrl = NetworkUtils.buildReviewsUrl(id.toString());
+
+            DetailActivityAsyncTask loadAdditionalData = new DetailActivityAsyncTask(MovieDetail.this);
+            loadAdditionalData.execute(queryTrailersUrl, queryReviewsUrl);
+
+        }
+
 
 
     }
